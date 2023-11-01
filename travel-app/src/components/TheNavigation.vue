@@ -1,13 +1,12 @@
 <template>
   <div  id="nav">
-    <router-link id="logo" to="/">Travel Your Ass Out</router-link>
+    <router-link id="logo" to="/">Travel Until You Drop Dead</router-link>
     <router-link
       v-for="destination in destinations"
       :key="destination.id"
       :to="{
         name: 'destination.show',
-        params: {id: destination.id,
-                 slug: destination.slug},
+        params: {slug: destination.slug},
       }"
     >
       {{ destination.name }}

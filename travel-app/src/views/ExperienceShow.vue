@@ -3,7 +3,6 @@
     <h3>{{ experience.name }}</h3>
     <img :src="`/images/${experience.image}`">
     <p>{{ experience.description }}</p>
-
   </section>
 </template>
 
@@ -13,16 +12,16 @@ import sourceData from '../data.json';
 
 export default {
   props: {
-    id: {
-      type: Number,
+    slug: {
+      type: String,
       required: true,
-    }
+    },
   },
 
   computed: {
     experience() {
       return sourceData.destinations
-        .find((destination) => destination.id == this.id)
+        .find((destination) => destination.slug == this.slug)
           .experiences
             .find(
               (experience) => 

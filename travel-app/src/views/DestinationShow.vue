@@ -40,23 +40,23 @@ export default {
   },
 
   props: {
-    id: {
-      type: Number,
+    slug: {
+      type: String,
       required: true,
     },
   },
   
-  methods: {
-    // async initData() {
-    //   const response = await fetch(`https://travel-dummy-api.netlify.app/${this.$route.params.slug}`);
-    //   this.destination = await response.json();
-    // },
-  },
+  // methods: {
+  //   async initData() {
+  //     const response = await fetch(`https://travel-dummy-api.netlify.app/${this.$route.params.slug}`);
+  //     this.destination = await response.json();
+  //   },
+  // },
 
   computed: {
     destination() {
       return sourceData.destinations
-        .find((destination) => destination.id === this.id);
+        .find((destination) => destination.slug === this.slug);
     },
   },
 
