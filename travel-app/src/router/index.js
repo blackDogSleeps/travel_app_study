@@ -86,12 +86,17 @@ const router = new VueRouter({
       if (to.hash) {
         position.selector = to.hash;
         if (to.hash === '#experience') {
-          position.offset = { y: 160 };
+          position.offset = { y: 180 };
         }
         if (document.querySelector(to.hash)) {
+          position.behavior = 'smooth';
           return position;
         }
         return false;
+      }
+      
+      if (!to.hash) {
+        return { x: 0, y: 0 };
       }
     }
   },
