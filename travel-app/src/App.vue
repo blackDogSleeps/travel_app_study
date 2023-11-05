@@ -2,9 +2,12 @@
   <div id="app">
     <div class="container">
       <the-navigation />
-      <transition name="slide" mode="out-in">
-        <router-view :key="$route.path"/>
-      </transition>
+      <template>
+        <transition name="fade" mode="out-in">
+          <router-view
+            :key="this.$route.params.destinationSlug"/>
+        </transition>
+      </template>
     </div>
   </div>
 </template>
@@ -16,20 +19,20 @@ import TheNavigation from './components/TheNavigation.vue';
 export default {
   components: {
     TheNavigation,
-  }
+  },
 }
 </script>
 
 <style lang="css">
-  .slide-enter-active,
-  .slide-leave-active {
-    transition: opacity 1s, transform 1s;
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s;
   }
   
-  .slide-enter,
-  .slide-leave-to {
+  .fade-enter,
+  .fade-leave-to {
     opacity: 0;
-    transform: translateX(-30%);
+    /* transform: translateX(-30%); */
   }
 
 </style>

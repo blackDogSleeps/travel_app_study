@@ -8,7 +8,7 @@
         :to="{
           name: 'destination.show',
           params: {id: destination.id, 
-                   slug: destination.slug} }">
+                   destinationSlug: destination.slug} }">
         <h2>{{ destination.name }}</h2>
         <img
           :src="`/images/${destination.image}`"

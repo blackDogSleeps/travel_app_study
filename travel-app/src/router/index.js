@@ -11,29 +11,52 @@ const routes = [
     name: 'home',
     component: HomeView,
   },
+
   {
-    path: '/the-real-path/:slug',
+    path: '/invoices',
+    name: 'invoices',
+    component: () =>
+      import('../views/InvoicesPage.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+
+  },
+  
+  {
+    path: '/protected',
+    name: 'protected',
+    component: () =>
+      import('../views/ProtectedPage.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+
+  {
+    path: '/login',
+    name: 'login',
+    component: () =>
+      import('../views/LoginPage.vue'),
+  },
+
+  {
+    path: '/destination/:destinationSlug',
     name: 'destination.show',
     component: () => 
       import('../views/DestinationShow.vue'),
-    props: route => ({
-      ...route.params,
-      id: parseInt(route.params.id)}),
     children: [
       {
         path: ':experienceSlug',
         name: 'experience.show',
         component: () => 
           import('../views/ExperienceShow.vue'),
-        props: route => ({
-          ...route.params,
-          slug: route.params.slug,
-        })
+
       }
     ],
     beforeEnter: (to, from, next) => {
       const exists = sourceData.destinations.find(
-        destination => destination.slug === to.params.slug
+        destination => destination.slug === to.params.destinationSlug
       )
       if (exists) {
         next();
@@ -44,7 +67,8 @@ const routes = [
     }
   },
   {
-    path: '*',
+    path: '/404',
+    alias: '*',
     name: 'notFound',
     component: () =>
       import('../views/NotFound.vue'),
@@ -54,7 +78,35 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      const position = {};
+      if (to.hash) {
+        position.selector = to.hash;
+        if (to.hash === '#experience') {
+          position.offset = { y: 160 };
+        }
+        if (document.querySelector(to.hash)) {
+          return position;
+        }
+        return false;
+      }
+    }
+  },
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !localStorage.getItem('username')) {
+    next({
+      name: 'login',
+      query: { redirect: to.fullPath } 
+    });
+  } else {
+    next();
+  }
 });
 
 export default router;
