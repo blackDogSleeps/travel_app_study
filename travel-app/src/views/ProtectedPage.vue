@@ -9,6 +9,9 @@
     <router-link :to="{ name: 'invoices' }">
       <button  class="btn">Invoices</button>
     </router-link>
+    <router-link :to="{ name: 'hidden' }">
+      <button class="btn">Hidden Page</button>
+    </router-link>
   </div>
 </template>
 
@@ -16,7 +19,7 @@
 export default {
   data() {
     return {
-      username: window.user
+      username: localStorage.getItem('username'),
     }
   },
 
@@ -28,6 +31,10 @@ export default {
     },
   }
 }
-
-
 </script>
+
+<style lang="css">
+.btn {
+  margin-right: 10px;
+}
+</style>

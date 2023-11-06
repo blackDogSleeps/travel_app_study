@@ -67,6 +67,19 @@ const routes = [
     }
   },
   {
+    path: '/hidden',
+    name: 'hidden',
+    component: () =>
+      import('../views/HiddenPage.vue'),
+    beforeEnter(to, from, next) {
+      if (from.name !== 'protected') {
+        next({ name: 'notFound' });
+      } else {
+        next();
+      }
+    },
+  },
+  {
     path: '/404',
     alias: '*',
     name: 'notFound',
