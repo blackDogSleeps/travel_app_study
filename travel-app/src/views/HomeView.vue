@@ -9,7 +9,6 @@
           name: 'destination.show',
           params: { id: destination.id,
                     destinationSlug: destination.slug },
-          meta: { destinationSlug: destination.slug }
         }">
         <h2>{{ destination.name }}</h2>
         <img
