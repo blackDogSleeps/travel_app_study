@@ -7,8 +7,10 @@
         :key="destination.id"
         :to="{
           name: 'destination.show',
-          params: {id: destination.id, 
-                   destinationSlug: destination.slug} }">
+          params: { id: destination.id,
+                    destinationSlug: destination.slug },
+          meta: { destinationSlug: destination.slug }
+        }">
         <h2>{{ destination.name }}</h2>
         <img
           :src="`/images/${destination.image}`"

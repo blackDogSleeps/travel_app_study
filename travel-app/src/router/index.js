@@ -45,19 +45,24 @@ const routes = [
     name: 'destination.show',
     component: () => 
       import('../views/DestinationShow.vue'),
+    meta: {
+      viewKey: 'destinationSlug',
+    },
     children: [
       {
         path: ':experienceSlug',
         name: 'experience.show',
         component: () => 
           import('../views/ExperienceShow.vue'),
-
+        meta: {
+          viewKey: 'destinationSlug',
+        },
       }
     ],
     beforeEnter: (to, from, next) => {
       const exists = sourceData.destinations.find(
         destination => destination.slug === to.params.destinationSlug
-      )
+      );
       if (exists) {
         next();
       }
@@ -71,6 +76,7 @@ const routes = [
     name: 'hidden',
     component: () =>
       import('../views/HiddenPage.vue'),
+    
     beforeEnter(to, from, next) {
       if (from.name !== 'protected') {
         next({ name: 'notFound' });

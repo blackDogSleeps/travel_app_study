@@ -5,7 +5,7 @@
       <template>
         <transition name="fade" mode="out-in">
           <router-view
-            :key="this.$route.params.destinationSlug"/>
+            :key="getKey"/>
         </transition>
       </template>
     </div>
@@ -19,6 +19,14 @@ import TheNavigation from './components/TheNavigation.vue';
 export default {
   components: {
     TheNavigation,
+  },
+
+  computed: {
+    getKey() {
+      return this.$route.params[
+        this.$route.meta.viewKey
+      ];
+    },
   },
 }
 </script>
