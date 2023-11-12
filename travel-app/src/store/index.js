@@ -25,8 +25,12 @@ export default new Vuex.Store({
       if (!destination) {
         const bookmarkObject = {
           destinationSlug: bookmark.destinationSlug,
+          destinationName: bookmark.destinationName,
           experiences: [{
-            experienceSlug: bookmark.experienceSlug, 
+            experienceSlug: bookmark.experienceSlug,
+            experienceName: bookmark.experienceName,
+            experienceImage: bookmark.experienceImage,
+            experiencePath: bookmark.experiencePath, 
           }]
         };
         commit('addBookmarkMutation', bookmarkObject);
@@ -51,7 +55,12 @@ export default new Vuex.Store({
       console.log(state.bookmarksLength);
       state.bookmarks
         .find(item => item.destinationSlug === bookmark.destinationSlug)
-          .experiences.push({ experienceSlug: bookmark.experienceSlug });
+          .experiences.push(
+            { experienceSlug: bookmark.experienceSlug, 
+              experienceName: bookmark.experienceName,
+              experienceImage: bookmark.experienceImage,
+              experiencePath: bookmark.experiencePath,
+            });
     },
   }
 })

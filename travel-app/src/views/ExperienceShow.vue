@@ -34,6 +34,10 @@ export default {
     }
   },
 
+  props: {
+    destination: Object,
+  },
+
 
   computed: {
     experience() {
@@ -57,11 +61,12 @@ export default {
         return;
       }
       let bookmark = {
-        destinationSlug: this.$route.params[
-          this.$route.meta.bookmarkKey],
+        destinationSlug: this.destination.slug,
+        destinationName: this.destination.name,
         experienceSlug: experience.slug,
         experienceName: experience.name,
         experienceImage: experience.image,
+        experiencePath: this.$route.fullPath,
       }
 
       this.$store.dispatch(

@@ -26,7 +26,9 @@
         </router-link>
       </div>
       <transition name="fade" mode="out-in">
-        <router-view :key="$route.path"/>
+        <router-view
+          :destination="destination"
+          :key="$route.path"/>
       </transition>
     </section>
   </div>
