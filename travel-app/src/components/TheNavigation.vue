@@ -14,10 +14,16 @@
     <router-link :to="{ name: 'protected' }">
       Dashboard
     </router-link>
+    <router-link
+      class="bookmarks-btn"
+      :to="{ name: 'bookmarks' }">
+      <bookmarks-nav />
+    </router-link>
   </div>
 </template>
 
 <script>
+import BookmarksNav from './BookmarksNav';
 import sourceData from '../data.json';
 
 export default {
@@ -26,5 +32,20 @@ export default {
       destinations: sourceData.destinations,
     }
   },
+
+  components: {
+    BookmarksNav,
+  }
 }
 </script>
+
+<style lang="css" scoped>
+.bookmarks-btn {
+  opacity: 1 !important;
+}
+
+.bookmarks-btn:hover {
+  opacity: 0.7 !important;
+}
+
+</style>

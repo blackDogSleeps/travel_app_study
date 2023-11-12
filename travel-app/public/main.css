@@ -181,3 +181,7 @@ a {
   border-radius: 5px;
   border:none;
 }
+
+.btn-disabled {
+  opacity: 60%;
+}

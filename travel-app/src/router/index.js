@@ -13,6 +13,16 @@ const routes = [
   },
 
   {
+    path: '/bookmarks',
+    name: 'bookmarks',
+    component: () =>
+      import('../views/BookmarksPage.vue'),
+    meta: {
+      requiresAuth: true,
+    },
+  },
+
+  {
     path: '/invoices',
     name: 'invoices',
     component: () =>
@@ -56,6 +66,7 @@ const routes = [
           import('../views/ExperienceShow.vue'),
         meta: {
           viewKey: 'destinationSlug',
+          bookmarkKey: 'destinationSlug',
         },
       }
     ],

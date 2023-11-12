@@ -1,17 +1,20 @@
 <template>
   <div>
     <h1>Hello there {{ username }} </h1>
+    <router-link :to="{ name: 'bookmarks' }">
+      <button class="btn">Bookmarks</button>
+    </router-link>
+    <router-link :to="{ name: 'invoices' }">
+      <button class="btn">Invoices</button>
+    </router-link>
+    <router-link :to="{ name: 'hidden' }">
+      <button class="btn">Hidden Page</button>
+    </router-link>
     <button
       @click="logOut()"
       class="btn">
       Logout
     </button>
-    <router-link :to="{ name: 'invoices' }">
-      <button  class="btn">Invoices</button>
-    </router-link>
-    <router-link :to="{ name: 'hidden' }">
-      <button class="btn">Hidden Page</button>
-    </router-link>
   </div>
 </template>
 
