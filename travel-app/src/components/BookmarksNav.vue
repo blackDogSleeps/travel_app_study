@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="bookmarksLength > 0"
+    v-if="bookmarksLength"
     class="bookmarks-box"  
   >
     Bookmarked: {{ bookmarksLength }}
@@ -9,11 +9,28 @@
 
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   computed: {
+    ...mapGetters({
+      users: 'users/getUsers',
+    }),
+
+    ...mapState({
+      bookmarks: state => state.bookmarks.bookmarks
+        .map(item => item.experiences.length),
+    }),
+
     bookmarksLength() {
-      return this.$store.state.bookmarksLength;
+      if (this.users.length < 1) {
+        return;
+      }
+      if (this.bookmarks.length > 0) {
+        return this.bookmarks
+          .reduce((a, b) => a + b);  
+      }
+      return null;
     }
   }
 }
@@ -31,9 +48,5 @@ export default {
   opacity: 1;
 
 }
-
-/* .bookmark-count {
-  transform: translateY(33%);
-} */
 
 </style>

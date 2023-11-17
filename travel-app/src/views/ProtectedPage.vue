@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
@@ -27,9 +29,14 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      removeUser: 'users/removeUser',
+    }),
+
     logOut() {
-      // window.user = undefined;
-      localStorage.removeItem('username')
+      const userToRemove = localStorage.getItem('username');
+      this.removeUser(userToRemove);
+      localStorage.removeItem('username');
       this.$router.push({ name: 'home' });
     },
   }

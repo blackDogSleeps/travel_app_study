@@ -110,6 +110,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
+      console.log(savedPosition);
       return savedPosition;
     } else {
       const position = {};

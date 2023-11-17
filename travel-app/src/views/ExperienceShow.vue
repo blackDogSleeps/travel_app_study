@@ -7,7 +7,7 @@
         <button
           v-if="!isBookmarked(experience)"
           @click="addBookmark(experience)"
-          class="btn">
+          class="btn bookmark-btn">
           Bookmark
         </button>
         <button
@@ -25,7 +25,7 @@
 
 <script>
 import sourceData from '../data.json';
-
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -40,6 +40,10 @@ export default {
 
 
   computed: {
+    ...mapGetters({
+      getBookmarks: 'bookmarks/getBookmarks',
+    }),
+
     experience() {
       return sourceData.destinations
         .find((destination) => 
@@ -52,6 +56,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      addBookMarkAction: 'bookmarks/addBookmark',
+    }),
+
     addBookmark(experience) {
       if (!localStorage.getItem('username')) {
         this.$router.push(
@@ -61,22 +69,24 @@ export default {
         return;
       }
       let bookmark = {
+        destinationId: this.destination.id,
         destinationSlug: this.destination.slug,
         destinationName: this.destination.name,
+        regionId: experience.regionId,
         experienceSlug: experience.slug,
         experienceName: experience.name,
         experienceImage: experience.image,
         experiencePath: this.$route.fullPath,
+        experienceDescription: experience.description,
       }
 
-      this.$store.dispatch(
-        'addBookmark', bookmark);
+      this.addBookMarkAction(bookmark);
     },
 
     isBookmarked(experience) {
       const viewKey = this.$route.params[this.$route.meta.viewKey];
-      const direction = this.$store.getters
-        .getBookmarks.find(item => item.destinationSlug === viewKey);
+      const direction = this.getBookmarks
+        .find(item => item.destinationSlug === viewKey);
       if (!direction) {
         return null;
       }
@@ -97,7 +107,16 @@ export default {
 
 .btn {
   margin-left: 5px;
-  margin-right: 5px; 
+  margin-right: 5px;
+  cursor: pointer; 
+}
+
+.bookmark-btn:hover {
+  opacity: 0.9;
+}
+
+.btn-disabled {
+  cursor: default !important;
 }
 
 .experience-details {

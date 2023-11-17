@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
@@ -21,9 +23,14 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      addUser: 'users/addUser',
+    }),
+
     login() {
       // window.user = this.username;
       localStorage.setItem('username', this.username);
+      this.addUser(this.username);
       const redirectPath = this.$route.query.redirect || '/';
       this.$router.push(redirectPath);
     }

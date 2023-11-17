@@ -15,8 +15,15 @@
 
 <script>
 import TheNavigation from './components/TheNavigation.vue';
+import { mapActions } from 'vuex';
 
 export default {
+  data() {
+    return {
+      a: 'a',
+    }
+  },
+  
   components: {
     TheNavigation,
   },
@@ -28,6 +35,19 @@ export default {
       ];
     },
   },
+
+  methods: {
+    ...mapActions({
+      addUser: 'users/addUser',
+    }),
+  },
+
+  created() {
+    const loggedInUser = localStorage.getItem('username');
+    if (loggedInUser) {
+      this.addUser(loggedInUser);
+    }
+  }
 }
 </script>
 
@@ -40,7 +60,6 @@ export default {
   .fade-enter,
   .fade-leave-to {
     opacity: 0;
-    /* transform: translateX(-30%); */
   }
 
 </style>
