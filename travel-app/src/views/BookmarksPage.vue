@@ -42,9 +42,19 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   computed: {
+    // ...mapGetters({
+    //   bookmarks: 'bookmarks/getBookmarks',
+    // }),
     ...mapGetters({
       bookmarks: 'bookmarks/getBookmarks',
     }),
+
+    ...mapGetters({
+      users: 'users/getUsers',
+    }),
+
+
+    
 
     noBookmarks() {
       return this.bookmarks.length < 1;

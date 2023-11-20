@@ -9,7 +9,8 @@
 
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+// import users from '@/store/modules/users';
+import { mapGetters } from 'vuex';
 
 export default {
   computed: {
@@ -17,18 +18,25 @@ export default {
       users: 'users/getUsers',
     }),
 
-    ...mapState({
-      bookmarks: state => state.bookmarks.bookmarks
-        .map(item => item.experiences.length),
+    ...mapGetters({
+      bookmarks: 'bookmarks/getBookmarks',
     }),
+
+    // ...mapState({
+    //   bookmarks: state => state.bookmarks.bookmarks
+    //     .filter(bookmark => bookmark.userName === users[0].username)
+    //       .map(item => item.experiences.length),
+    // }),
 
     bookmarksLength() {
       if (this.users.length < 1) {
         return;
       }
       if (this.bookmarks.length > 0) {
+        console.log(this.bookmarks);
         return this.bookmarks
-          .reduce((a, b) => a + b);  
+          .map(item => item.experiences.length)
+            .reduce((a, b) => a + b);  
       }
       return null;
     }

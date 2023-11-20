@@ -44,6 +44,10 @@ export default {
       getBookmarks: 'bookmarks/getBookmarks',
     }),
 
+    ...mapGetters({
+      users: 'users/getUsers',
+    }),
+
     experience() {
       return sourceData.destinations
         .find((destination) => 
@@ -69,24 +73,30 @@ export default {
         return;
       }
       let bookmark = {
+        userName: this.users[0].username,
         destinationId: this.destination.id,
         destinationSlug: this.destination.slug,
         destinationName: this.destination.name,
-        regionId: experience.regionId,
-        experienceSlug: experience.slug,
-        experienceName: experience.name,
-        experienceImage: experience.image,
-        experiencePath: this.$route.fullPath,
-        experienceDescription: experience.description,
-      }
+        experiences: [{
+          regionId: experience.regionId,
+          experienceSlug: experience.slug,
+          experienceName: experience.name,
+          experienceImage: experience.image,
+          experiencePath: this.$route.fullPath,
+          experienceDescription: experience.description,
+        }]};
 
       this.addBookMarkAction(bookmark);
     },
 
     isBookmarked(experience) {
+      if (this.users.length < 1) {
+        return;
+      }
       const viewKey = this.$route.params[this.$route.meta.viewKey];
       const direction = this.getBookmarks
-        .find(item => item.destinationSlug === viewKey);
+        .filter(bookmark => bookmark.userName === this.users[0].username)
+          .find(item => item.destinationSlug === viewKey);
       if (!direction) {
         return null;
       }

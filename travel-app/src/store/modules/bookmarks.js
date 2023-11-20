@@ -6,42 +6,48 @@ export default {
   },
 
   getters: {
-    getBookmarks(state) {
-      return state.bookmarks;
+    getBookmarks(state, getters, rootState, rootGetters) {
+      if (rootGetters['users/getUsers'].length < 1) {
+        return state.bookmarks;
+      }
+      return state.bookmarks
+        .filter(
+          bookmark => 
+          bookmark.userName === 
+          rootGetters['users/getUsers'][0].username);
     }
   },
 
   actions: {
     addBookmark({commit, getters}, bookmark) {
-      const destination = getters.getBookmarks
+      const userBookmarks = getters.getBookmarks
+        .filter(item => item.userName === bookmark.userName);
+      
+      if (userBookmarks.length < 1) {
+        commit('addBookmarkMutation', bookmark);
+        return;
+      }
+
+      const destination = userBookmarks
         .find(item => item.destinationSlug === bookmark.destinationSlug);
       
         if (!destination) {
-        const bookmarkObject = {
-          destinationId: bookmark.destinationId,
-          destinationSlug: bookmark.destinationSlug,
-          destinationName: bookmark.destinationName,
-          experiences: [{
-            regionId: bookmark.regionId,
-            experienceSlug: bookmark.experienceSlug,
-            experienceName: bookmark.experienceName,
-            experienceImage: bookmark.experienceImage,
-            experiencePath: bookmark.experiencePath,
-            experienceDescription: bookmark.experienceDescription,
-          }]
-        };
-        commit('addBookmarkMutation', bookmarkObject);
+        commit('addBookmarkMutation', bookmark);
       } else {
         const experience = destination.experiences
-          .find(item => item.experienceSlug === bookmark.experienceSlug);
+          .find(
+            item => 
+            item.experienceSlug === 
+            bookmark.experiences.experienceSlug);
         if (!experience) {
           commit('updateDestination', bookmark);
         } 
       }      
     },
 
-    removeBookmark({ commit }, bookmark) {
-      commit('removeBookmarkFromState', bookmark);
+    removeBookmark({ commit, rootGetters }, bookmark) {
+      const user = rootGetters['users/getUsers'][0];
+      commit('removeBookmarkFromState', {bookmark, user});
     },
   },
 
@@ -51,11 +57,14 @@ export default {
     },
 
     removeBookmarkFromState(state, bookmark) {
-      const currentDestination = state.bookmarks
+      const userBookmarks = state.bookmarks
+        .filter(item => item.userName === bookmark.user.username);
+      
+      const currentDestination = userBookmarks
         .find(destination =>
           destination.destinationId ===
-          bookmark.destination.destinationId);
-      
+          bookmark.bookmark.destination.destinationId);
+       
       if (!currentDestination) {
         return;
       }
@@ -63,7 +72,7 @@ export default {
       currentDestination.experiences = currentDestination.experiences
         .filter(experience => 
           experience.regionId !==
-          bookmark.existingExperience.regionId);
+          bookmark.bookmark.existingExperience.regionId);
       
       if (currentDestination.experiences.length < 1) {
         state.bookmarks = state.bookmarks
@@ -75,15 +84,9 @@ export default {
 
     updateDestination(state, bookmark) {
       state.bookmarks
-        .find(item => item.destinationSlug === bookmark.destinationSlug)
-          .experiences.push(
-            { regionId: bookmark.regionId,
-              experienceSlug: bookmark.experienceSlug, 
-              experienceName: bookmark.experienceName,
-              experienceImage: bookmark.experienceImage,
-              experiencePath: bookmark.experiencePath,
-              experienceDescription: bookmark.experienceDescription,
-            });
+        .filter(item => item.userName === bookmark.userName)
+          .find(item => item.destinationSlug === bookmark.destinationSlug)
+            .experiences.push(bookmark.experiences[0]);
     },
   }
 }

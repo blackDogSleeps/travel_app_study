@@ -25,12 +25,19 @@
 <script>
 import BookmarksNav from './BookmarksNav';
 import sourceData from '../data.json';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
       destinations: sourceData.destinations,
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      users: 'users/getUsers',
+    }),
   },
 
   components: {
